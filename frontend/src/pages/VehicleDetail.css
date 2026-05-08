@@ -1,0 +1,229 @@
+.vehicle-detail-page {
+    min-height: calc(100vh - 68px);
+    padding: 48px;
+    background: #0a0a0f;
+}
+
+.vehicle-detail-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.back-btn {
+    background: transparent;
+    border: none;
+    color: #6b7280;
+    font-size: 15px;
+    cursor: pointer;
+    margin-bottom: 24px;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.back-btn:hover {
+    color: white;
+}
+
+.vehicle-detail-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.vehicle-detail-image {
+    position: relative;
+    height: 380px;
+    background: rgba(255,255,255,0.03);
+    overflow: hidden;
+}
+
+.vehicle-detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vehicle-detail-image .no-image {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #374151;
+    font-size: 16px;
+}
+
+.vehicle-detail-image .offer-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.offer-badge.sale { background: rgba(230,57,70,0.9); color: white; }
+.offer-badge.rent { background: rgba(59,130,246,0.9); color: white; }
+.offer-badge.both { background: rgba(139,92,246,0.9); color: white; }
+
+.vehicle-detail-info {
+    padding: 40px;
+}
+
+.vehicle-detail-info h1 {
+    font-size: 30px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+    margin-bottom: 28px;
+}
+
+.vehicle-detail-info h1 span {
+    color: #6b7280;
+    font-weight: 400;
+    font-size: 22px;
+}
+
+.vehicle-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.vehicle-detail-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.vehicle-detail-label {
+    font-size: 11px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.vehicle-detail-value {
+    font-size: 15px;
+    color: white;
+    font-weight: 600;
+}
+
+.vehicle-detail-description {
+    color: #9ca3af;
+    line-height: 1.7;
+    margin-bottom: 28px;
+    font-size: 15px;
+}
+
+.vehicle-detail-cta {
+    background: rgba(230,57,70,0.06);
+    border: 1px solid rgba(230,57,70,0.15);
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+}
+
+.vehicle-detail-cta-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.vehicle-detail-cta-sub {
+    color: #9ca3af;
+    font-size: 14px;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.vehicle-detail-cta-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.cta-btn-primary {
+    background: #e63946;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cta-btn-primary:hover {
+    background: #c1121f;
+}
+
+.cta-btn-secondary {
+    background: transparent;
+    color: #d1d5db;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cta-btn-secondary:hover {
+    color: white;
+    border-color: rgba(255,255,255,0.3);
+}
+
+.vehicle-detail-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-buy {
+    width: 100%;
+    background: #e63946;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-buy:hover {
+    background: #c1121f;
+    transform: translateY(-1px);
+}
+
+.btn-rent {
+    width: 100%;
+    background: rgba(59,130,246,0.1);
+    color: #3b82f6;
+    border: 1px solid rgba(59,130,246,0.3);
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-rent:hover {
+    background: rgba(59,130,246,0.2);
+    transform: translateY(-1px);
+}

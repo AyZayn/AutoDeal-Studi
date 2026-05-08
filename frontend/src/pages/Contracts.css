@@ -1,0 +1,153 @@
+.contracts-page {
+    min-height: calc(100vh - 68px);
+    padding: 60px 48px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.contracts-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.contracts-header h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.contracts-header h1 span {
+    color: #e63946;
+}
+
+.contracts-header p {
+    color: #6b7280;
+    font-size: 16px;
+}
+
+.contracts-empty {
+    text-align: center;
+    padding: 80px 24px;
+}
+
+.contracts-empty p {
+    color: #6b7280;
+    font-size: 18px;
+    margin-bottom: 24px;
+}
+
+.contracts-browse-btn {
+    background: #e63946;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.contracts-browse-btn:hover {
+    background: #c1121f;
+}
+
+.contracts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contract-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.contract-card:hover {
+    border-color: rgba(255,255,255,0.12);
+}
+
+.contract-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.contract-card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contract-type {
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.contract-status {
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.contract-status.pending   { background: rgba(234,179,8,0.15);   color: #eab308; }
+.contract-status.confirmed { background: rgba(59,130,246,0.15);  color: #3b82f6; }
+.contract-status.active    { background: rgba(34,197,94,0.15);   color: #22c55e; }
+.contract-status.completed { background: rgba(156,163,175,0.15); color: #9ca3af; }
+.contract-status.cancelled { background: rgba(230,57,70,0.15);   color: #e63946; }
+
+.contract-delete-btn {
+    background: transparent;
+    border: 1px solid rgba(230,57,70,0.3);
+    color: #e63946;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.contract-delete-btn:hover {
+    background: rgba(230,57,70,0.1);
+    border-color: #e63946;
+}
+
+.contract-delete-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.contract-card-body {
+    padding: 24px;
+}
+
+.contract-card-body h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.contract-card-body p {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.contract-price {
+    color: #e63946 !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    margin-top: 12px !important;
+}

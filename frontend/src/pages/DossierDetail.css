@@ -1,0 +1,336 @@
+.dossier-detail-page {
+    min-height: calc(100vh - 68px);
+    padding: 48px;
+    background: #0a0a0f;
+}
+
+.dossier-detail-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.dossier-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+.dossier-detail-header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+    text-transform: capitalize;
+}
+
+.dossier-detail-vehicle {
+    color: #6b7280;
+    font-size: 15px;
+}
+
+.dossier-detail-status {
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.dossier-detail-status.pending           { background: rgba(234,179,8,0.15);   color: #eab308; }
+.dossier-detail-status.documents_received { background: rgba(59,130,246,0.15);  color: #3b82f6; }
+.dossier-detail-status.under_review      { background: rgba(139,92,246,0.15);  color: #8b5cf6; }
+.dossier-detail-status.approved          { background: rgba(34,197,94,0.15);   color: #22c55e; }
+.dossier-detail-status.rejected          { background: rgba(230,57,70,0.15);   color: #e63946; }
+.dossier-detail-status.completed         { background: rgba(156,163,175,0.15); color: #9ca3af; }
+.dossier-detail-status.cancelled         { background: rgba(156,163,175,0.15); color: #9ca3af; }
+
+.dossier-timeline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 40px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 28px 40px;
+}
+
+.timeline-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 1;
+}
+
+.timeline-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.1);
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+    position: relative;
+    z-index: 1;
+}
+
+.timeline-dot.active {
+    background: rgba(34,197,94,0.15);
+    border-color: #22c55e;
+    color: #22c55e;
+}
+
+.timeline-dot.current {
+    background: #e63946;
+    border-color: #e63946;
+    color: white;
+    box-shadow: 0 0 16px rgba(230,57,70,0.4);
+}
+
+.timeline-label {
+    font-size: 12px;
+    color: #6b7280;
+    text-align: center;
+    font-weight: 500;
+}
+
+.timeline-label.active { color: white; }
+
+.timeline-line {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: rgba(255,255,255,0.08);
+    z-index: 0;
+}
+
+.timeline-line.active { background: #22c55e; }
+
+.dossier-rejected-banner {
+    background: rgba(230,57,70,0.1);
+    border: 1px solid rgba(230,57,70,0.2);
+    color: #e63946;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    font-size: 15px;
+}
+
+.dossier-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    align-items: start;
+}
+
+.dossier-section {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+}
+
+.dossier-section h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 6px;
+}
+
+.dossier-section-sub {
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.download-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.download-btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
+}
+
+.download-btn:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-1px);
+}
+
+.download-icon { font-size: 28px; }
+
+.download-btn-title {
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.download-btn-sub {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.dossier-success-msg {
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.2);
+    color: #22c55e;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.dossier-error-msg {
+    background: rgba(230,57,70,0.1);
+    border: 1px solid rgba(230,57,70,0.2);
+    color: #e63946;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.upload-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.upload-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 14px 18px;
+    transition: border-color 0.2s;
+}
+
+.upload-item.uploaded {
+    border-color: rgba(34,197,94,0.2);
+    background: rgba(34,197,94,0.03);
+}
+
+.upload-item-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.upload-icon { font-size: 22px; }
+
+.upload-item-label {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.upload-item-status {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.upload-btn {
+    background: #e63946;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.upload-btn:hover { background: #c1121f; }
+
+.upload-btn.re-upload {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #9ca3af;
+}
+
+.upload-btn.re-upload:hover {
+    color: white;
+    border-color: rgba(255,255,255,0.3);
+}
+
+.upload-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.dossier-vehicle-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.dossier-recap-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dossier-recap-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.dossier-recap-item span:first-child {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.dossier-recap-item span:last-child {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.dossier-recap-item.total span:last-child {
+    color: #e63946;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.dossier-notes-text {
+    color: #9ca3af;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.6;
+}
