@@ -21,7 +21,7 @@
 }
 
 .back-btn:hover {
-    color: white;
+    color: rgb(228, 227, 227);
 }
 
 .vehicle-detail-card {
@@ -32,10 +32,16 @@
 }
 
 .vehicle-detail-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    justify-content: center;
     position: relative;
-    height: 380px;
-    background: rgba(255,255,255,0.03);
+    height: 500px;
+    width: 100%;          
+    background: rgba(255, 255, 255, 0.03);
     overflow: hidden;
+    text-align: center;  
 }
 
 .vehicle-detail-image img {
@@ -123,6 +129,8 @@
     line-height: 1.7;
     margin-bottom: 28px;
     font-size: 15px;
+    white-space: pre-line; 
+    text-align: left; /* Optionnel : souvent plus lisible pour de longs textes */
 }
 
 .vehicle-detail-cta {
@@ -154,8 +162,8 @@
 }
 
 .cta-btn-primary {
-    background: #e63946;
-    color: white;
+    background: #e6081a;
+    color: rgb(204, 193, 193);
     border: none;
     padding: 12px 28px;
     border-radius: 10px;

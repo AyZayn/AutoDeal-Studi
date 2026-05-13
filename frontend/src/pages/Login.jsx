@@ -29,7 +29,7 @@ function Login() {
                 {error && <p className="auth-error">{error}</p>}
                 <form onSubmit={handleSubmit} className="auth-form">
                     <div className="auth-field">
-                        <label>Nom d utilisateur</label>
+                        <label>Nom d'utilisateur</label>
                         <input name="username" value={form.username} onChange={handleChange} required />
                     </div>
                     <div className="auth-field">
@@ -38,7 +38,7 @@ function Login() {
                     </div>
                     <button type="submit" className="auth-btn">Se connecter</button>
                 </form>
-                <p className="auth-footer">Pas de compte ? <Link to="/register">S inscrire</Link></p>
+                <p className="auth-footer">Pas de compte ? <Link to="/register">S'inscrire</Link></p>
             </div>
         </div>
     );

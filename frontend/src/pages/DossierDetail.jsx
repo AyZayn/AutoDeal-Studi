@@ -42,7 +42,7 @@ function DossierDetail() {
             setTimeout(() => setSuccess(""), 3000);
             fetchDossier();
         } catch {
-            setError("Erreur lors de l upload");
+            setError("Erreur lors de l'upload");
         }
         setUploading(null);
     };

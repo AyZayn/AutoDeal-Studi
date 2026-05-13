@@ -29,7 +29,7 @@ function Dossiers() {
             await API.delete("/contracts/" + id + "/");
             setDossiers(dossiers.filter(c => c.id !== id));
         } catch {
-            alert("Erreur lors de l annulation");
+            alert("Erreur lors de l'annulation");
         }
         setDeleting(null);
     };
@@ -37,11 +37,11 @@ function Dossiers() {
     const statusConfig = {
         pending:              { label: "En attente",          color: "pending" },
         documents_received:   { label: "Documents recus",     color: "documents_received" },
-        under_review:         { label: "En verification",     color: "under_review" },
-        approved:             { label: "Approuve",            color: "approved" },
-        rejected:             { label: "Refuse",              color: "rejected" },
-        completed:            { label: "Termine",             color: "completed" },
-        cancelled:            { label: "Annule",              color: "cancelled" },
+        under_review:         { label: "En vérification",     color: "under_review" },
+        approved:             { label: "Approuvé",            color: "approved" },
+        rejected:             { label: "Refusé",              color: "rejected" },
+        completed:            { label: "Terminé",             color: "completed" },
+        cancelled:            { label: "Annulé",              color: "cancelled" },
     };
 
     if (loading) return <div className="page-loading">Chargement...</div>;
@@ -69,7 +69,7 @@ function Dossiers() {
                                 <div className="dossier-card-header">
                                     <div className="dossier-card-header-left">
                                         <span className="dossier-type">
-                                            {dossier.contract_type === "sale" ? "Demande d achat" : "Demande de location"}
+                                            {dossier.contract_type === "sale" ? "Demande d'achat" : "Demande de location"}
                                         </span>
                                         <span className={"dossier-status " + status.color}>
                                             {status.label}

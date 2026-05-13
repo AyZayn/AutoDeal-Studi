@@ -53,7 +53,7 @@ function Contracts() {
             </div>
             {contracts.length === 0 ? (
                 <div className="contracts-empty">
-                    <p>Vous n avez pas encore de contrats</p>
+                    <p>Vous n'avez pas encore de contrats</p>
                     <button onClick={() => navigate("/vehicles")} className="contracts-browse-btn">
                         Voir les vehicules
                     </button>

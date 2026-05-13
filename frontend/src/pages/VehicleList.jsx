@@ -79,16 +79,16 @@ function VehicleList() {
     {vehicle.rent_price && (
         <div className="price-block">
             <span className="price-label">Location</span>
-            <span className="price-rent">{Number(vehicle.rent_price).toLocaleString("fr-FR")} EUR/j</span>
+            <span className="price-rent">{Number(vehicle.rent_price).toLocaleString("fr-FR")} EUR/Mois</span>
         </div>
     )}
 </div>
-                            <Link to={"/vehicles/" + vehicle.id} className="vehicle-card-btn">Voir details →</Link>
+                            <Link to={"/vehicles/" + vehicle.id} className="vehicle-card-btn">Voir détails →</Link>
                         </div>
                     </div>
                 ))}
             </div>
-            {filtered.length === 0 && <p className="empty-message">Aucun vehicule trouve</p>}
+            {filtered.length === 0 && <p className="empty-message">Aucun véhicule trouvé</p>}
         </div>
     );
 }

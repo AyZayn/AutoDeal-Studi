@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "./VehicleDetail.css";
 
 function VehicleDetail() {
     const { id } = useParams();
@@ -13,7 +14,7 @@ function VehicleDetail() {
     const fuelLabels = {
         gasoline: "Essence",
         diesel: "Diesel",
-        electric: "Electrique",
+        electric: "Électrique",
         hybrid: "Hybride",
     };
 
@@ -30,14 +31,14 @@ function VehicleDetail() {
 
     const handleDossier = (type) => {
         if (!token) {
-            navigate("/register", { state: { message: "Inscrivez-vous pour deposer votre dossier", vehicleId: id, type } });
+            navigate("/register", { state: { message: "Inscrivez-vous pour déposer votre dossier", vehicleId: id, type } });
             return;
         }
         navigate("/dossier/new", { state: { vehicle, type } });
     };
 
     if (loading) return <div className="page-loading">Chargement...</div>;
-    if (!vehicle) return <div className="page-loading">Vehicule introuvable</div>;
+    if (!vehicle) return <div className="page-loading">Véhicule introuvable</div>;
 
     return (
         <div className="vehicle-detail-page">
@@ -56,12 +57,12 @@ function VehicleDetail() {
                         <h1>{vehicle.brand} {vehicle.model} <span>({vehicle.year})</span></h1>
                         <div className="vehicle-detail-grid">
                             {[
-                                { label: "Kilometrage", value: vehicle.mileage + " km" },
-                                { label: "Carburant", value: fuelLabels[vehicle.fuel] || vehicle.fuel },
-                                { label: "Transmission", value: transmissionLabels[vehicle.transmission] || vehicle.transmission },
-                                { label: "Places", value: vehicle.seats },
-                                { label: "Couleur", value: vehicle.color },
-                                { label: "Disponible", value: vehicle.is_available ? "Oui" : "Non" },
+                                { label: "Kilometrage : ", value: vehicle.mileage + " km" },
+                                { label: "Carburant : ", value: fuelLabels[vehicle.fuel] || vehicle.fuel },
+                                { label: "Transmission : ", value: transmissionLabels[vehicle.transmission] || vehicle.transmission },
+                                { label: "Places : ", value: vehicle.seats },
+                                { label: "Couleur : ", value: vehicle.color },
+                                { label: "Disponible : ", value: vehicle.is_available ? "Oui" : "Non" },
                             ].map((item) => (
                                 <div key={item.label} className="vehicle-detail-item">
                                     <span className="vehicle-detail-label">{item.label}</span>
@@ -74,14 +75,14 @@ function VehicleDetail() {
                         {!token && (
                             <div className="vehicle-detail-cta">
                                 <p className="vehicle-detail-cta-text">
-                                    Vous etes interesse par ce vehicule ?
+                                    Vous êtes interessé par ce vehicule ?
                                 </p>
                                 <p className="vehicle-detail-cta-sub">
-                                    Inscrivez-vous ou connectez-vous pour deposer votre dossier d achat ou de location.
+                                    Inscrivez-vous ou connectez-vous pour deposer votre dossier d'achat ou de location.
                                 </p>
                                 <div className="vehicle-detail-cta-actions">
                                     <button onClick={() => navigate("/register")} className="cta-btn-primary">
-                                        Creer un compte
+                                        Créer un compte
                                     </button>
                                     <button onClick={() => navigate("/login")} className="cta-btn-secondary">
                                         Se connecter
@@ -94,12 +95,12 @@ function VehicleDetail() {
                             <div className="vehicle-detail-actions">
                                 {(vehicle.offer_type === "sale" || vehicle.offer_type === "both") && vehicle.sale_price && (
                                     <button onClick={() => handleDossier("sale")} className="btn-buy">
-                                        Deposer un dossier d achat — {Number(vehicle.sale_price).toLocaleString("fr-FR")} EUR
+                                        Déposer un dossier d'achat — {Number(vehicle.sale_price).toLocaleString("fr-FR")} EUR
                                     </button>
                                 )}
                                 {(vehicle.offer_type === "rent" || vehicle.offer_type === "both") && vehicle.rent_price && (
                                     <button onClick={() => handleDossier("rent")} className="btn-rent">
-                                        Deposer un dossier de location — {Number(vehicle.rent_price).toLocaleString("fr-FR")} EUR/jour
+                                        Déposer un dossier de location — {Number(vehicle.rent_price).toLocaleString("fr-FR")} EUR/Mois
                                     </button>
                                 )}
                             </div>
