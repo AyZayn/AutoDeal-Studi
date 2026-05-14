@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -178,4 +179,13 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
+}
+
+JAZZMIN_SETTINGS = {
+    "site_title": "AutoDeal Admin",
+    "site_header": "AutoDeal",
+    "site_brand": "AutoDeal Management",
+    "welcome_sign": "Bienvenue sur l'administration AutoDeal",
+    "copyright": "AutoDeal Ltd",
+    "search_model": ["auth.User", "vehicles.Vehicle"],
 }

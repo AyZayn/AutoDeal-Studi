@@ -4,7 +4,7 @@ from .models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    list_display = ["username", "email", "first_name", "last_name", "role", "phone"]
+    list_display = ['username', 'email', 'first_name', 'last_name', 'role', 'phone']
     fieldsets = UserAdmin.fieldsets + (
-        ("Informations supplementaires", {"fields": ("phone", "address", "city", "birth_date", "role")}),
+        ('Informations supplementaires', {'fields': ('phone', 'address', 'city', 'birth_date', 'role')}),
     )
