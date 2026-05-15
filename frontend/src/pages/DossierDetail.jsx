@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../services/api";
 import "./DossierDetail.css";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 
 function DossierDetail() {
     const { id } = useParams();
@@ -47,93 +49,165 @@ function DossierDetail() {
         setUploading(null);
     };
 
-    const downloadTemplate = (type) => {
-        const content = type === "formulaire"
-            ? generateFormulaire()
-            : generateListeDocuments();
-        const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = type === "formulaire" ? "formulaire_dossier.txt" : "liste_documents_requis.txt";
-        a.click();
-        URL.revokeObjectURL(url);
-    };
 
-    const generateFormulaire = () => {
-        return `FORMULAIRE DE DOSSIER - AUTODEAL
-================================
+const downloadTemplate = (type) => {
+    if (type === "liste") {
+const a = document.createElement("a");
+a.href = "/Documents/Liste_Documents_Requis_AutoDeal.pdf";
+a.download = "Liste_Documents_Requis_AutoDeal.pdf";
+a.click();
+        return;
+    }
+    generateFormulairePDF();
+};
 
-Type de demande : ${dossier?.contract_type === "sale" ? "ACHAT" : "LOCATION"}
-Vehicule : ${dossier?.vehicle_detail?.brand} ${dossier?.vehicle_detail?.model} (${dossier?.vehicle_detail?.year})
-Montant total : ${dossier?.total_price} EUR
+const generateFormulairePDF = () => {
+    const doc = new jsPDF();
+    const rouge = [230, 57, 70];
+    const noir = [10, 10, 15];
+    const gris = [107, 114, 128];
 
-INFORMATIONS PERSONNELLES
--------------------------
-Nom : ___________________________
-Prenom : ________________________
-Date de naissance : ______________
-Adresse : _______________________
-Ville : _________________________
-Code postal : ___________________
-Telephone : _____________________
-Email : _________________________
+    // En-tête
+    doc.setFillColor(...rouge);
+    doc.rect(0, 0, 210, 35, "F");
 
-SITUATION PROFESSIONNELLE
--------------------------
-Employeur : _____________________
-Poste occupe : __________________
-Salaire mensuel net : ____________
-Anciennete : ____________________
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(22);
+    doc.setFont("helvetica", "bold");
+    doc.text("AutoDeal", 15, 18);
 
-INFORMATIONS BANCAIRES
-----------------------
-Banque : ________________________
-IBAN : __________________________
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text("Formulaire de dossier de " + (dossier?.contract_type === "sale" ? "demande d achat" : "demande de location"), 15, 28);
 
-Fait a ________________, le ________________
+    // Informations vehicule
+    doc.setTextColor(...noir);
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.text("Vehicule concerne", 15, 50);
 
-Signature : _____________________
-`;
-    };
+    autoTable(doc, {
+        startY: 55,
+        head: [],
+        body: [
+            ["Marque / Modele", `${dossier?.vehicle_detail?.brand} ${dossier?.vehicle_detail?.model}`],
+            ["Annee", `${dossier?.vehicle_detail?.year}`],
+            ["Type de demande", dossier?.contract_type === "sale" ? "Achat" : "Location"],
+            ["Montant total", `${Number(dossier?.total_price).toLocaleString("fr-FR")} EUR`],
+            ["Date de debut", dossier?.start_date || ""],
+            ["Date de fin", dossier?.end_date || "Non applicable"],
+        ],
+        theme: "grid",
+        styles: { fontSize: 10, cellPadding: 4 },
+        columnStyles: {
+            0: { fillColor: [245, 245, 245], fontStyle: "bold", cellWidth: 60 },
+            1: { cellWidth: 120 },
+        },
+        margin: { left: 15, right: 15 },
+    });
 
-    const generateListeDocuments = () => {
-        return `LISTE DES DOCUMENTS REQUIS - AUTODEAL
-======================================
+    // Informations personnelles
+    const y1 = doc.lastAutoTable.finalY + 15;
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...noir);
+    doc.text("Informations personnelles", 15, y1);
 
-Pour constituer votre dossier, merci de fournir les documents suivants :
+    autoTable(doc, {
+        startY: y1 + 5,
+        head: [],
+        body: [
+            ["Nom", ""],
+            ["Prenom", ""],
+            ["Date de naissance", ""],
+            ["Adresse", ""],
+            ["Ville", ""],
+            ["Code postal", ""],
+            ["Telephone", ""],
+            ["Email", ""],
+        ],
+        theme: "grid",
+        styles: { fontSize: 10, cellPadding: 6 },
+        columnStyles: {
+            0: { fillColor: [245, 245, 245], fontStyle: "bold", cellWidth: 60 },
+            1: { cellWidth: 120 },
+        },
+        margin: { left: 15, right: 15 },
+    });
 
-1. CARTE NATIONALE D IDENTITE (CNI)
-   - Recto et verso
-   - En cours de validite
-   - Format accepte : PDF, JPG, PNG
+    // Situation professionnelle
+    const y2 = doc.lastAutoTable.finalY + 15;
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...noir);
+    doc.text("Situation professionnelle", 15, y2);
 
-2. JUSTIFICATIF DE DOMICILE
-   - De moins de 3 mois
-   - Facture EDF, eau, internet ou quittance de loyer
-   - Format accepte : PDF, JPG, PNG
+    autoTable(doc, {
+        startY: y2 + 5,
+        head: [],
+        body: [
+            ["Employeur", ""],
+            ["Poste occupe", ""],
+            ["Salaire mensuel net", ""],
+            ["Anciennete", ""],
+        ],
+        theme: "grid",
+        styles: { fontSize: 10, cellPadding: 6 },
+        columnStyles: {
+            0: { fillColor: [245, 245, 245], fontStyle: "bold", cellWidth: 60 },
+            1: { cellWidth: 120 },
+        },
+        margin: { left: 15, right: 15 },
+    });
 
-3. FICHE DE PAIE
-   - Les 3 derniers mois
-   - Ou dernier avis d imposition
-   - Format accepte : PDF, JPG, PNG
+    // Informations bancaires
+    const y3 = doc.lastAutoTable.finalY + 15;
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...noir);
+    doc.text("Informations bancaires", 15, y3);
 
-IMPORTANT
----------
-- Tous les documents doivent etre lisibles
-- Les fichiers ne doivent pas depasser 5 MB
-- En cas de doute, contactez-nous
+    autoTable(doc, {
+        startY: y3 + 5,
+        head: [],
+        body: [
+            ["Banque", ""],
+            ["IBAN", ""],
+        ],
+        theme: "grid",
+        styles: { fontSize: 10, cellPadding: 6 },
+        columnStyles: {
+            0: { fillColor: [245, 245, 245], fontStyle: "bold", cellWidth: 60 },
+            1: { cellWidth: 120 },
+        },
+        margin: { left: 15, right: 15 },
+    });
 
-Contact : contact@autodeal.fr
-Telephone : 01 23 45 67 89
-`;
-    };
+    // Signature
+    const y4 = doc.lastAutoTable.finalY + 15;
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(...gris);
+    doc.text("Fait a _________________________, le _________________________", 15, y4);
+    doc.text("Signature :", 15, y4 + 15);
+    doc.line(40, y4 + 15, 120, y4 + 15);
+
+    // Pied de page
+    doc.setFillColor(...rouge);
+    doc.rect(0, 280, 210, 17, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(9);
+    doc.text("AutoDeal — contact@autodeal.fr — 01 23 45 67 89", 15, 290);
+    doc.text("www.autodeal.fr", 160, 290);
+
+    doc.save("formulaire_dossier_autodeal.pdf");
+};
 
     const statusSteps = [
-        { key: "pending", label: "Dossier depose" },
-        { key: "documents_received", label: "Documents recus" },
+        { key: "pending", label: "Dossier déposé" },
+        { key: "documents_received", label: "Documents reçus" },
         { key: "under_review", label: "En verification" },
-        { key: "approved", label: "Approuve" },
+        { key: "approved", label: "Approuvé" },
     ];
 
     const getStepIndex = (status) => {
@@ -195,7 +269,7 @@ Telephone : 01 23 45 67 89
 
                 {isRejected && (
                     <div className="dossier-rejected-banner">
-                        ❌ Votre dossier a ete refuse. Veuillez nous contacter pour plus d informations.
+                        ❌ Votre dossier a été refusé. Veuillez nous contacter pour plus d informations.
                     </div>
                 )}
 

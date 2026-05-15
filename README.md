@@ -1,6 +1,6 @@
 ---
 
-## 👤 User Stories
+## User Stories
 
 ### Définition d une User Story
 
@@ -82,7 +82,7 @@ Une User Story suit le format :
 
 **En tant que** client inscrit, **je veux** me connecter à mon espace, **afin d** accéder à mes dossiers et mon profil.
 
-**Critères d acceptation :**
+**Critères d'acceptation :**
 - Connexion avec username et mot de passe
 - Token JWT stocké localement
 - Navbar mise à jour après connexion

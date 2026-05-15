@@ -19,8 +19,9 @@ function NewDossier() {
     const calculateTotal = () => {
         if (type === "sale") return Number(vehicle.sale_price);
         if (!startDate || !endDate) return 0;
-        const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
-        return days > 0 ? (days * vehicle.rent_price).toFixed(2) : 0;
+    const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
+    const months = Math.ceil(days / 30);
+    return (months * vehicle.rent_price).toFixed(2);
     };
 
     const handleSubmit = async (e) => {
@@ -37,7 +38,7 @@ function NewDossier() {
             setSuccess(true);
             setTimeout(() => navigate("/dossiers"), 2000);
         } catch {
-            setError("Erreur lors du depot du dossier");
+            setError("Erreur lors du dépot du dossier");
         }
     };
 
@@ -46,10 +47,10 @@ function NewDossier() {
             <div className="dossier-container">
                 <button onClick={() => navigate(-1)} className="back-btn-d">← Retour</button>
                 <h1 className="dossier-title">
-                    Dossier de {type === "sale" ? "demande d achat" : "demande de location"}
+                    Dossier de {type === "sale" ? "demande d'achat" : "demande de location"}
                 </h1>
 
-                {success && <div className="dossier-success">Dossier depose avec succes ! Redirection...</div>}
+                {success && <div className="dossier-success">Dossier déposé avec succès ! Redirection...</div>}
                 {error && <div className="dossier-error">{error}</div>}
 
                 <div className="dossier-vehicle-recap">
@@ -64,7 +65,7 @@ function NewDossier() {
                         <p className="dossier-price">
                             {type === "sale"
                                 ? Number(vehicle.sale_price).toLocaleString("fr-FR") + " EUR"
-                                : Number(vehicle.rent_price).toLocaleString("fr-FR") + " EUR/jour"}
+                                : Number(vehicle.rent_price).toLocaleString("fr-FR") + " EUR/Mois"}
                         </p>
                     </div>
                 </div>
@@ -74,7 +75,7 @@ function NewDossier() {
                     <form onSubmit={handleSubmit} className="dossier-form">
                         <div className="dossier-form-row">
                             <div className="dossier-field">
-                                <label>{type === "sale" ? "Date d achat souhaitee" : "Date de debut"}</label>
+                                <label>{type === "sale" ? "Date d'achat souhaitée" : "Date de debut"}</label>
                                 <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
                             </div>
                             {type === "rent" && (
@@ -85,11 +86,11 @@ function NewDossier() {
                             )}
                         </div>
                         <div className="dossier-field">
-                            <label>Message ou informations complementaires (optionnel)</label>
+                            <label>Message ou informations complémentaires (optionnel)</label>
                             <textarea
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
-                                placeholder="Ex: Je suis disponible le matin, j ai deja un financement..."
+                                placeholder="Ex: Je suis disponible le matin, j'ai déja un financement..."
                                 rows={4}
                             />
                         </div>
@@ -103,7 +104,7 @@ function NewDossier() {
                             </div>
                         )}
                         <button type="submit" className="dossier-submit-btn">
-                            Deposer mon dossier
+                            Déposer mon dossier
                         </button>
                     </form>
                 </div>
