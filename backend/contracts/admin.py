@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Contract, ClientDocument
+from .models import Contract, ClientDocument, RentalOption
+
+
+@admin.register(RentalOption)
+class RentalOptionAdmin(admin.ModelAdmin):
+    list_display = ["name", "option_type", "billing_type", "price", "is_active"]
+    list_editable = ["price", "is_active"]
+    list_filter = ["option_type", "billing_type", "is_active"]
 
 
 @admin.register(Contract)
