@@ -2,6 +2,9 @@ from rest_framework import viewsets, filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .models import Vehicle
 from .serializers import VehicleSerializer
+import logging
+
+logger = logging.getLogger("autodeal")
 
 
 class VehicleViewSet(viewsets.ModelViewSet):
@@ -24,3 +27,15 @@ class VehicleViewSet(viewsets.ModelViewSet):
         if is_available:
             queryset = queryset.filter(is_available=True)
         return queryset
+
+    def perform_create(self, serializer):
+        vehicle = serializer.save()
+        logger.info(f"Nouveau vehicule ajoute — {vehicle.brand} {vehicle.model} ({vehicle.year}) — par: {self.request.user.username}")
+
+    def perform_update(self, serializer):
+        vehicle = serializer.save()
+        logger.info(f"Vehicule modifie — {vehicle.brand} {vehicle.model} — par: {self.request.user.username}")
+
+    def perform_destroy(self, instance):
+        logger.warning(f"Vehicule supprime — {instance.brand} {instance.model} — par: {self.request.user.username}")
+        instance.delete()
