@@ -189,3 +189,50 @@ JAZZMIN_SETTINGS = {
     "copyright": "AutoDeal Ltd",
     "search_model": ["auth.User", "vehicles.Vehicle"],
 }
+
+import os
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] {levelname} {module} — {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} — {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "file_errors": {
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs", "errors.log"),
+            "level": "ERROR",
+            "formatter": "verbose",
+        },
+        "file_info": {
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs", "info.log"),
+            "level": "INFO",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file_errors"],
+            "level": "ERROR",
+            "propagate": True,
+        },
+        "autodeal": {
+            "handlers": ["console", "file_info", "file_errors"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
+}
