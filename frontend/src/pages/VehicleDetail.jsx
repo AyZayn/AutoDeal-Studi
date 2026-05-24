@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import RentalOptions from "../components/RentalOptions";
 import "./VehicleDetail.css";
 
 function VehicleDetail() {
@@ -10,11 +11,12 @@ function VehicleDetail() {
     const { token } = useAuth();
     const [vehicle, setVehicle] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [rentalOptions, setRentalOptions] = useState([]);
 
     const fuelLabels = {
         gasoline: "Essence",
         diesel: "Diesel",
-        electric: "Électrique",
+        electric: "Electrique",
         hybrid: "Hybride",
     };
 
@@ -27,18 +29,23 @@ function VehicleDetail() {
         API.get("/vehicles/" + id + "/")
             .then((res) => { setVehicle(res.data); setLoading(false); })
             .catch(() => setLoading(false));
+        API.get("/rental-options/")
+            .then((res) => setRentalOptions(res.data))
+            .catch(() => {});
     }, [id]);
 
     const handleDossier = (type) => {
         if (!token) {
-            navigate("/register", { state: { message: "Inscrivez-vous pour déposer votre dossier", vehicleId: id, type } });
+            navigate("/register");
             return;
         }
         navigate("/dossier/new", { state: { vehicle, type } });
     };
 
     if (loading) return <div className="page-loading">Chargement...</div>;
-    if (!vehicle) return <div className="page-loading">Véhicule introuvable</div>;
+    if (!vehicle) return <div className="page-loading">Vehicule introuvable</div>;
+
+    const isRent = vehicle.offer_type === "rent" || vehicle.offer_type === "both";
 
     return (
         <div className="vehicle-detail-page">
@@ -57,12 +64,12 @@ function VehicleDetail() {
                         <h1>{vehicle.brand} {vehicle.model} <span>({vehicle.year})</span></h1>
                         <div className="vehicle-detail-grid">
                             {[
-                                { label: "Kilometrage : ", value: vehicle.mileage + " km" },
-                                { label: "Carburant : ", value: fuelLabels[vehicle.fuel] || vehicle.fuel },
-                                { label: "Transmission : ", value: transmissionLabels[vehicle.transmission] || vehicle.transmission },
-                                { label: "Places : ", value: vehicle.seats },
-                                { label: "Couleur : ", value: vehicle.color },
-                                { label: "Disponible : ", value: vehicle.is_available ? "Oui" : "Non" },
+                                { label: "Kilometrage", value: vehicle.mileage + " km" },
+                                { label: "Carburant", value: fuelLabels[vehicle.fuel] || vehicle.fuel },
+                                { label: "Transmission", value: transmissionLabels[vehicle.transmission] || vehicle.transmission },
+                                { label: "Places", value: vehicle.seats },
+                                { label: "Couleur", value: vehicle.color },
+                                { label: "Disponible", value: vehicle.is_available ? "Oui" : "Non" },
                             ].map((item) => (
                                 <div key={item.label} className="vehicle-detail-item">
                                     <span className="vehicle-detail-label">{item.label}</span>
@@ -70,19 +77,31 @@ function VehicleDetail() {
                                 </div>
                             ))}
                         </div>
-                        {vehicle.description && <p className="vehicle-detail-description">{vehicle.description}</p>}
+
+                        {vehicle.description && (
+                            <p className="vehicle-detail-description">{vehicle.description}</p>
+                        )}
+
+                        {isRent && rentalOptions.length > 0 && (
+                            <RentalOptions
+                                options={rentalOptions}
+                                selectedOptions={[]}
+                                onToggle={() => {}}
+                                readOnly={true}
+                            />
+                        )}
 
                         {!token && (
                             <div className="vehicle-detail-cta">
                                 <p className="vehicle-detail-cta-text">
-                                    Vous êtes interessé par ce vehicule ?
+                                    Vous etes interesse par ce vehicule ?
                                 </p>
                                 <p className="vehicle-detail-cta-sub">
-                                    Inscrivez-vous ou connectez-vous pour deposer votre dossier d'achat ou de location.
+                                    Inscrivez-vous ou connectez-vous pour deposer votre dossier.
                                 </p>
                                 <div className="vehicle-detail-cta-actions">
                                     <button onClick={() => navigate("/register")} className="cta-btn-primary">
-                                        Créer un compte
+                                        Creer un compte
                                     </button>
                                     <button onClick={() => navigate("/login")} className="cta-btn-secondary">
                                         Se connecter
@@ -95,12 +114,12 @@ function VehicleDetail() {
                             <div className="vehicle-detail-actions">
                                 {(vehicle.offer_type === "sale" || vehicle.offer_type === "both") && vehicle.sale_price && (
                                     <button onClick={() => handleDossier("sale")} className="btn-buy">
-                                        Déposer un dossier d'achat — {Number(vehicle.sale_price).toLocaleString("fr-FR")} EUR
+                                        Deposer un dossier d'achat — {Number(vehicle.sale_price).toLocaleString("fr-FR")} EUR
                                     </button>
                                 )}
                                 {(vehicle.offer_type === "rent" || vehicle.offer_type === "both") && vehicle.rent_price && (
                                     <button onClick={() => handleDossier("rent")} className="btn-rent">
-                                        Déposer un dossier de location — {Number(vehicle.rent_price).toLocaleString("fr-FR")} EUR/Mois
+                                        Déposer un dossier de location — {Number(vehicle.rent_price).toLocaleString("fr-FR")} EUR/jour
                                     </button>
                                 )}
                             </div>

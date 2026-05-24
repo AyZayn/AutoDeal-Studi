@@ -11,14 +11,6 @@ function Dossiers() {
     const { token } = useAuth();
     const navigate = useNavigate();
 
-    // Redirection si non connecté + chargement des données
-    useEffect(() => {
-        if (!token) { 
-            navigate("/login"); 
-            return; 
-        }
-        fetchDossiers();
-    }, [token, navigate]);
 
     // Récupération des dossiers via l'API
     const fetchDossiers = () => {
@@ -32,6 +24,15 @@ function Dossiers() {
                 setLoading(false);
             });
     };
+
+    // Redirection si non connecté + chargement des données
+    useEffect(() => {
+        if (!token) { 
+            navigate("/login"); 
+            return; 
+        }
+        fetchDossiers();
+    }, [token, navigate]);
 
     // Suppression (Annulation) d'un dossier
     const handleDelete = async (id) => {
@@ -86,9 +87,7 @@ function Dossiers() {
             ) : (
                 <div className="dossiers-list">
                     {dossiers.map((dossier) => {
-                        // Récupération de la config du statut ou valeur par défaut
                         const status = statusConfig[dossier.status] || { label: dossier.status, color: "pending" };
-                        // On ne peut annuler que si le dossier est toujours "en attente"
                         const canDelete = dossier.status === "pending";
 
                         return (

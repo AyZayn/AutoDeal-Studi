@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import API from "../services/api";
+import RentalOptions from "../components/RentalOptions";
 import "./NewDossier.css";
 
 function NewDossier() {
@@ -13,15 +14,32 @@ function NewDossier() {
     const [notes, setNotes] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
+    const [rentalOptions, setRentalOptions] = useState([]);
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
+    useEffect(() => {
+        if (type === "rent") {
+            API.get("/rental-options/")
+                .then((res) => setRentalOptions(res.data))
+                .catch(() => {});
+        }
+    }, [type]);
 
     if (!vehicle) { navigate("/vehicles"); return null; }
 
     const calculateTotal = () => {
         if (type === "sale") return Number(vehicle.sale_price);
         if (!startDate || !endDate) return 0;
-    const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
-    const months = Math.ceil(days / 30);
-    return (months * vehicle.rent_price).toFixed(2);
+        const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
+        return days > 0 ? (days * vehicle.rent_price).toFixed(2) : 0;
+    };
+
+    const handleToggleOption = (optionId) => {
+        setSelectedOptions(prev =>
+            prev.includes(optionId)
+                ? prev.filter(id => id !== optionId)
+                : [...prev, optionId]
+        );
     };
 
     const handleSubmit = async (e) => {
@@ -34,11 +52,12 @@ function NewDossier() {
                 end_date: type === "rent" ? endDate : null,
                 total_price: calculateTotal(),
                 notes: notes,
+                selected_options: selectedOptions,
             });
             setSuccess(true);
             setTimeout(() => navigate("/dossiers"), 2000);
         } catch {
-            setError("Erreur lors du dépot du dossier");
+            setError("Erreur lors du depot du dossier");
         }
     };
 
@@ -47,10 +66,10 @@ function NewDossier() {
             <div className="dossier-container">
                 <button onClick={() => navigate(-1)} className="back-btn-d">← Retour</button>
                 <h1 className="dossier-title">
-                    Dossier de {type === "sale" ? "demande d'achat" : "demande de location"}
+                    Dossier de {type === "sale" ? "demande d achat" : "demande de location"}
                 </h1>
 
-                {success && <div className="dossier-success">Dossier déposé avec succès ! Redirection...</div>}
+                {success && <div className="dossier-success">Dossier depose avec succes ! Redirection...</div>}
                 {error && <div className="dossier-error">{error}</div>}
 
                 <div className="dossier-vehicle-recap">
@@ -65,7 +84,7 @@ function NewDossier() {
                         <p className="dossier-price">
                             {type === "sale"
                                 ? Number(vehicle.sale_price).toLocaleString("fr-FR") + " EUR"
-                                : Number(vehicle.rent_price).toLocaleString("fr-FR") + " EUR/Mois"}
+                                : Number(vehicle.rent_price).toLocaleString("fr-FR") + " EUR/jour"}
                         </p>
                     </div>
                 </div>
@@ -75,7 +94,7 @@ function NewDossier() {
                     <form onSubmit={handleSubmit} className="dossier-form">
                         <div className="dossier-form-row">
                             <div className="dossier-field">
-                                <label>{type === "sale" ? "Date d'achat souhaitée" : "Date de debut"}</label>
+                                <label>{type === "sale" ? "Date d achat souhaitee" : "Date de debut"}</label>
                                 <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
                             </div>
                             {type === "rent" && (
@@ -85,26 +104,43 @@ function NewDossier() {
                                 </div>
                             )}
                         </div>
+
+                        {type === "rent" && rentalOptions.length > 0 && (
+                            <RentalOptions
+                                options={rentalOptions}
+                                selectedOptions={selectedOptions}
+                                onToggle={handleToggleOption}
+                                readOnly={false}
+                            />
+                        )}
+
                         <div className="dossier-field">
-                            <label>Message ou informations complémentaires (optionnel)</label>
+                            <label>Message ou informations complementaires (optionnel)</label>
                             <textarea
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
-                                placeholder="Ex: Je suis disponible le matin, j'ai déja un financement..."
+                                placeholder="Ex: Je suis disponible le matin, j ai deja un financement..."
                                 rows={4}
                             />
                         </div>
+
                         {calculateTotal() > 0 && (
                             <div className="dossier-total">
-                                <span>Total estimé</span>
+                                <span>Total location estimé</span>
                                 <span className="dossier-total-price">
                                     {Number(calculateTotal()).toLocaleString("fr-FR")} EUR
-                                    {type === "rent" && " (total location)"}
                                 </span>
                             </div>
                         )}
+
+                        {selectedOptions.length > 0 && (
+                            <p className="dossier-options-note">
+                                * Le prix des options selectionnees sera defini par notre equipe apres validation de votre dossier.
+                            </p>
+                        )}
+
                         <button type="submit" className="dossier-submit-btn">
-                            Déposer mon dossier
+                            Deposer mon dossier
                         </button>
                     </form>
                 </div>

@@ -206,3 +206,169 @@ npm run dev
 
 ### Variables d environnement
 Créer un fichier `.env` dans `backend/` :
+
+
+
+---
+
+## 🔒 Mesures de Sécurité
+
+### 1 — Authentification JWT (JSON Web Token)
+
+**Où :** `backend/backend/settings.py` + `backend/backend/urls.py`
+
+**Justification :**
+- Chaque utilisateur reçoit un token signé après connexion
+- Le token expire après 30 jours — un token volé devient inutile
+- Le token est vérifié à chaque requête sensible côté Django
+- Aucun mot de passe n'est stocké en clair — Django utilise PBKDF2 avec SHA256
+
+```python
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=365),
+}
+```
+
+---
+
+### 2 — Variables d'environnement (.env)
+
+**Où :** `backend/.env` + `backend/backend/settings.py`
+
+**Justification :**
+- La clé secrète Django, les identifiants PostgreSQL et les paramètres sensibles ne sont jamais écrits en dur dans le code
+- Le fichier `.env` est dans `.gitignore` — il ne sera jamais publié sur GitHub
+- En cas de fuite du code source, les données sensibles restent protégées
+
+```python
+SECRET_KEY = os.getenv("SECRET_KEY")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+```
+
+---
+
+### 3 — CORS (Cross-Origin Resource Sharing)
+
+**Où :** `backend/backend/settings.py`
+
+**Justification :**
+- Seul le front-end React sur `http://localhost:5173` est autorisé à communiquer avec l'API Django
+- Toute requête venant d'un autre domaine est bloquée automatiquement
+- Empêche les attaques Cross-Site Request Forgery (CSRF)
+
+```python
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+```
+
+---
+
+### 4 — Permissions par rôle
+
+**Où :** `backend/contracts/views.py` + `backend/vehicles/views.py`
+
+**Justification :**
+- Les véhicules sont lisibles par tous (visiteurs) mais modifiables uniquement par les admins
+- Les dossiers sont visibles uniquement par leur propriétaire
+- Un client ne peut pas voir les dossiers d'un autre client
+- Un admin voit tous les dossiers
+
+```python
+def get_queryset(self):
+    user = self.request.user
+    if user.role == "admin":
+        return Contract.objects.all()
+    return Contract.objects.filter(client=user)
+```
+
+---
+
+### 5 — Protection des mots de passe
+
+**Où :** Django natif via `AbstractUser`
+
+**Justification :**
+- Django hache automatiquement les mots de passe avec PBKDF2-SHA256
+- Jamais stockés en clair dans la base de données
+- Vérification sécurisée via `check_password()`
+
+---
+
+### 6 — Validation des données (Serializers)
+
+**Où :** `backend/vehicles/serializers.py`, `backend/users/serializers.py`, `backend/contracts/serializers.py`
+
+**Justification :**
+- Toutes les données envoyées par le client sont validées avant d'être sauvegardées
+- Les champs sensibles comme `client` et `status` sont en `read_only` — un utilisateur ne peut pas se les attribuer lui-même
+- Empêche les injections de données malveillantes
+
+```python
+class ContractSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contract
+        fields = "__all__"
+        read_only_fields = ["client", "status", "signed_at", "created_at", "updated_at"]
+```
+
+---
+
+### 7 — Logs et surveillance
+
+**Où :** `backend/backend/settings.py` + `backend/logs/`
+
+**Justification :**
+- Toutes les actions importantes sont enregistrées (inscription, création de dossier, upload de documents)
+- Les tentatives d'accès non autorisées sont loguées en WARNING
+- Les erreurs critiques sont loguées en ERROR dans un fichier dédié
+- Permet de détecter des comportements suspects
+
+---
+
+### 8 — Protection des fichiers uploadés
+
+**Où :** `backend/backend/settings.py` + `backend/contracts/views.py`
+
+**Justification :**
+- Les documents uploadés par les clients sont stockés dans un dossier `media/documents/` inaccessible directement depuis le navigateur
+- Seul Django sert ces fichiers après vérification des permissions
+- Les formats acceptés sont limités à PDF, JPG, PNG
+
+---
+
+## 📊 Tableau récapitulatif des User Stories
+
+| ID | User Story | Statut | Sécurité associée |
+|---|---|---|---|
+| US-01 | Consulter les véhicules | ✅ DONE | Lecture publique |
+| US-02 | Voir le détail d un véhicule | ✅ DONE | Lecture publique |
+| US-03 | S inscrire | ✅ DONE | Validation + hachage mot de passe |
+| US-04 | Se connecter | ✅ DONE | JWT + token expirable |
+| US-05 | Déposer un dossier | ✅ DONE | Auth requise + client auto-assigné |
+| US-06 | Suivre ses dossiers | ✅ DONE | Filtrage par propriétaire |
+| US-07 | Documents dématérialisés | ✅ DONE | Upload sécurisé + vérification type |
+| US-08 | Gérer son profil | ✅ DONE | Auth requise + champs protégés |
+
+---
+
+## 🧪 Résultats des Tests
+
+### Couverture des tests
+
+| Module | Tests | Résultat |
+|---|---|---|
+| `vehicles/models.py` | 5 tests | ✅ |
+| `vehicles/views.py` | 4 tests | ✅ |
+| `users/models.py` | 3 tests | ✅ |
+| `users/views.py` | 5 tests | ✅ |
+| `contracts/models.py` | 5 tests | ✅ |
+| `contracts/views.py` | 5 tests | ✅ |
+| **Total** | **27 tests** | **✅ > 80%** |
+
+### Lancer les tests
+
+bash
+cd backend
+python manage.py test tests.test_vehicles tests.test_users tests.test_contracts

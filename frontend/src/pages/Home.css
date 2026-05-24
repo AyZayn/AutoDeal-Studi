@@ -32,12 +32,12 @@
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -2px;
-    color: white;
+    color: rgb(189, 7, 7);
     margin-bottom: 20px;
 }
 
 .home-title span {
-    color: #e63946;
+    color: #bab3b3;
 }
 
 .home-subtitle {
@@ -112,5 +112,5 @@
 .stat-divider {
     width: 1px;
     height: 40px;
-    background: rgba(255,255,255,0.08);
+    background: rgba(239, 241, 241, 0.08);
 }

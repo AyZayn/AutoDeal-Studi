@@ -17,12 +17,12 @@ function Navbar() {
                 Auto<span>Deal</span>
             </Link>
             <div className="navbar-links">
-                <Link to="/vehicles" className="nav-link">Vehicules</Link>
+                <Link to="/vehicles" className="nav-link">Véhicules</Link>
                 {token ? (
                     <>
                         <Link to="/dossiers" className="nav-link">Mes Dossiers</Link>
                         <Link to="/profile" className="nav-link">Mon Profil</Link>
-                        <button onClick={handleLogout} className="btn-danger">Deconnexion</button>
+                        <button onClick={handleLogout} className="btn-danger">Déconnexion</button>
                     </>
                 ) : (
                     <>

@@ -20,17 +20,17 @@ function Home() {
             </div>
             <div className="home-stats">
                 <div className="stat-item">
-                    <p className="stat-number">500+</p>
+                    <p className="stat-number">8</p>
                     <p className="stat-label">Véhicules disponibles</p>
                 </div>
                 <div className="stat-divider"></div>
                 <div className="stat-item">
-                    <p className="stat-number">1200+</p>
+                    <p className="stat-number">+100</p>
                     <p className="stat-label">Clients satisfaits</p>
                 </div>
                 <div className="stat-divider"></div>
                 <div className="stat-item">
-                    <p className="stat-number">10+</p>
+                    <p className="stat-number">+5</p>
                     <p className="stat-label">Années d'expérience</p>
                 </div>
             </div>
