@@ -1,6 +1,7 @@
 asgiref==3.11.1
 colorama==0.4.6
 coverage==7.10.7
+dj-database-url==3.0.1
 Django==4.2.30
 django-cors-headers==4.9.0
 django-jazzmin==3.0.1
