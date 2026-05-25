@@ -1,8 +1,7 @@
----
 
 ## User Stories
 
-### Définition d une User Story
+### Définition d'une User Story
 
 Une User Story suit le format :
 > **En tant que** [type d utilisateur], **je veux** [action], **afin de** [bénéfice]
