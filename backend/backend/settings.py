@@ -164,7 +164,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Autorise le front-end React à faire des requêtes
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "https://auto-deal-studi.vercel.app",
 ]
 
 # Configuration de l'API REST
