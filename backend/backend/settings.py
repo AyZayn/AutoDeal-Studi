@@ -205,20 +205,18 @@ LOGGING = {
             "style": "{",
         },
     },
-    "handlers": {
+"handlers": {
         "console": {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
         "file_errors": {
-            "class": "logging.FileHandler",
-            "filename": os.path.join(BASE_DIR, "logs", "errors.log"),
+            "class": "logging.StreamHandler",  # Changé ici pour la console
             "level": "ERROR",
             "formatter": "verbose",
         },
         "file_info": {
-            "class": "logging.FileHandler",
-            "filename": os.path.join(BASE_DIR, "logs", "info.log"),
+            "class": "logging.StreamHandler",  # Changé ici pour la console
             "level": "INFO",
             "formatter": "verbose",
         },
