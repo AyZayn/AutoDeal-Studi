@@ -16,7 +16,7 @@ function Register() {
             await API.post("/register/", form);
             navigate("/login");
         } catch {
-            setError("Erreur lors de l inscription");
+            setError("Erreur lors de l'inscription");
         }
     };
 
@@ -28,11 +28,11 @@ function Register() {
                 {error && <p className="auth-error">{error}</p>}
                 <form onSubmit={handleSubmit} className="auth-form">
                     {[
-                        { name: "first_name", label: "Prenom" },
+                        { name: "first_name", label: "Prénom" },
                         { name: "last_name", label: "Nom" },
-                        { name: "username", label: "Nom d utilisateur" },
+                        { name: "username", label: "Nom d'utilisateur" },
                         { name: "email", label: "Email", type: "email" },
-                        { name: "phone", label: "Telephone" },
+                        { name: "phone", label: "Téléphone" },
                         { name: "password", label: "Mot de passe", type: "password" },
                     ].map((field) => (
                         <div key={field.name} className="auth-field">
@@ -40,9 +40,9 @@ function Register() {
                             <input name={field.name} type={field.type || "text"} value={form[field.name]} onChange={handleChange} required />
                         </div>
                     ))}
-                    <button type="submit" className="auth-btn">Creer mon compte</button>
+                    <button type="submit" className="auth-btn">Créer mon compte</button>
                 </form>
-                <p className="auth-footer">Deja un compte ? <Link to="/login">Se connecter</Link></p>
+                <p className="auth-footer">Déja un compte ? <Link to="/login">Se connecter</Link></p>
             </div>
         </div>
     );

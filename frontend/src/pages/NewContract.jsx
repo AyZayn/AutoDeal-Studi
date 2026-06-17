@@ -52,7 +52,7 @@ function NewContract() {
                         <span className="text-white font-semibold">{vehicle.brand} {vehicle.model} ({vehicle.year})</span>
                     </div>
                     <div className="flex justify-between mb-2">
-                        <span className="text-gray-400">Kilometrage</span>
+                        <span className="text-gray-400">Kilométrage</span>
                         <span className="text-white">{vehicle.mileage} km</span>
                     </div>
                     <div className="flex justify-between">

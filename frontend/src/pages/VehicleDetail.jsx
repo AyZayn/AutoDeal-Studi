@@ -94,14 +94,14 @@ function VehicleDetail() {
                         {!token && (
                             <div className="vehicle-detail-cta">
                                 <p className="vehicle-detail-cta-text">
-                                    Vous etes interesse par ce vehicule ?
+                                    Vous êtes interessé par ce vehicule ?
                                 </p>
                                 <p className="vehicle-detail-cta-sub">
-                                    Inscrivez-vous ou connectez-vous pour deposer votre dossier.
+                                    Inscrivez-vous ou connectez-vous pour déposer votre dossier.
                                 </p>
                                 <div className="vehicle-detail-cta-actions">
                                     <button onClick={() => navigate("/register")} className="cta-btn-primary">
-                                        Creer un compte
+                                        Créer un compte
                                     </button>
                                     <button onClick={() => navigate("/login")} className="cta-btn-secondary">
                                         Se connecter
@@ -114,7 +114,7 @@ function VehicleDetail() {
                             <div className="vehicle-detail-actions">
                                 {(vehicle.offer_type === "sale" || vehicle.offer_type === "both") && vehicle.sale_price && (
                                     <button onClick={() => handleDossier("sale")} className="btn-buy">
-                                        Deposer un dossier d'achat — {Number(vehicle.sale_price).toLocaleString("fr-FR")} EUR
+                                        Déposer un dossier d'achat — {Number(vehicle.sale_price).toLocaleString("fr-FR")} EUR
                                     </button>
                                 )}
                                 {(vehicle.offer_type === "rent" || vehicle.offer_type === "both") && vehicle.rent_price && (
