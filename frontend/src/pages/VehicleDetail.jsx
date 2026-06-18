@@ -119,7 +119,7 @@ function VehicleDetail() {
                                 )}
                                 {(vehicle.offer_type === "rent" || vehicle.offer_type === "both") && vehicle.rent_price && (
                                     <button onClick={() => handleDossier("rent")} className="btn-rent">
-                                        Déposer un dossier de location — {Number(vehicle.rent_price).toLocaleString("fr-FR")} EUR/jour
+                                        Déposer un dossier de location — {Number(vehicle.rent_price).toLocaleString("fr-FR")} EUR/mois
                                     </button>
                                 )}
                             </div>
