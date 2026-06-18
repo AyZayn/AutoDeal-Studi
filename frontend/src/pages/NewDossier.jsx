@@ -27,12 +27,21 @@ function NewDossier() {
 
     if (!vehicle) { navigate("/vehicles"); return null; }
 
-    const calculateTotal = () => {
-        if (type === "sale") return Number(vehicle.sale_price);
-        if (!startDate || !endDate) return 0;
-        const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
-        return days > 0 ? (days * vehicle.rent_price).toFixed(2) : 0;
-    };
+const calculateTotal = () => {
+    if (type === "sale") return vehicle.sale_price;
+    if (!startDate || !endDate) return 0;
+
+    // 1. Calcul du nombre de jours réels
+    const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
+    if (days <= 0) return 0;
+
+    // 2. Conversion en mois (on divise par 30 jours en moyenne)
+    // Math.ceil permet d'arrondir au mois supérieur (ex: 0.5 mois devient 1 mois, 1.2 mois devient 2 mois)
+    const months = Math.ceil(days / 30);
+
+    // 3. Calcul du prix total basé sur le prix par mois (rent_price)
+    return (months * vehicle.rent_price).toFixed(2);
+};
 
     const handleToggleOption = (optionId) => {
         setSelectedOptions(prev =>
@@ -66,10 +75,10 @@ function NewDossier() {
             <div className="dossier-container">
                 <button onClick={() => navigate(-1)} className="back-btn-d">← Retour</button>
                 <h1 className="dossier-title">
-                    Dossier de {type === "sale" ? "demande d achat" : "demande de location"}
+                    Dossier de {type === "sale" ? "demande d'achat" : "demande de location"}
                 </h1>
 
-                {success && <div className="dossier-success">Dossier depose avec succes ! Redirection...</div>}
+                {success && <div className="dossier-success">Dossier déposé avec succès ! Redirection...</div>}
                 {error && <div className="dossier-error">{error}</div>}
 
                 <div className="dossier-vehicle-recap">
@@ -84,7 +93,7 @@ function NewDossier() {
                         <p className="dossier-price">
                             {type === "sale"
                                 ? Number(vehicle.sale_price).toLocaleString("fr-FR") + " EUR"
-                                : Number(vehicle.rent_price).toLocaleString("fr-FR") + " EUR/jour"}
+                                : Number(vehicle.rent_price).toLocaleString("fr-FR") + " EUR/mois"}
                         </p>
                     </div>
                 </div>
@@ -115,7 +124,7 @@ function NewDossier() {
                         )}
 
                         <div className="dossier-field">
-                            <label>Message ou informations complementaires (optionnel)</label>
+                            <label>Message ou informations complémentaires (optionnel)</label>
                             <textarea
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
@@ -135,12 +144,12 @@ function NewDossier() {
 
                         {selectedOptions.length > 0 && (
                             <p className="dossier-options-note">
-                                * Le prix des options selectionnees sera defini par notre equipe apres validation de votre dossier.
+                                * Le prix des options sélectionnées sera défini par notre équipe après validation de votre dossier.
                             </p>
                         )}
 
                         <button type="submit" className="dossier-submit-btn">
-                            Deposer mon dossier
+                            Déposer mon dossier
                         </button>
                     </form>
                 </div>
