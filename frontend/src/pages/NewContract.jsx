@@ -14,12 +14,21 @@ function NewContract() {
 
     if (!vehicle) { navigate("/vehicles"); return null; }
 
-    const calculateTotal = () => {
-        if (type === "sale") return vehicle.sale_price;
-        if (!startDate || !endDate) return 0;
-        const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
-        return days > 0 ? (days * vehicle.rent_price).toFixed(2) : 0;
-    };
+const calculateTotal = () => {
+    if (type === "sale") return vehicle.sale_price;
+    if (!startDate || !endDate) return 0;
+
+    // 1. Calcul du nombre de jours réels
+    const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
+    if (days <= 0) return 0;
+
+    // 2. Conversion en mois (on divise par 30 jours en moyenne)
+    // Math.ceil permet d'arrondir au mois supérieur (ex: 0.5 mois devient 1 mois, 1.2 mois devient 2 mois)
+    const months = Math.ceil(days / 30);
+
+    // 3. Calcul du prix total basé sur le prix par mois (rent_price)
+    return (months * vehicle.rent_price).toFixed(2);
+};
 
     const handleSubmit = async (e) => {
         e.preventDefault();
