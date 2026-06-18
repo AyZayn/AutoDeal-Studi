@@ -1,4 +1,9 @@
+Spécifications et Documentation du Projet
 
+Ce document regroupe les fonctionnalités, l'architecture, les protocoles de sécurité et les validations de tests mis en place pour l'application AutoDeal.
+
+
+1. User Stories et Fonctionnalités
 ## User Stories
 
 ### Définition d'une User Story
@@ -8,15 +13,15 @@ Une User Story suit le format :
 
 ### Démarche de développement d une User Story
 
-- [ ] Rédaction de la User Story avec critères d acceptation
-- [ ] Découpage en tâches techniques
-- [ ] Création d une branche `feature/nom-fonctionnalite`
-- [ ] Développement du back-end (modèle, serializer, vue, URL)
-- [ ] Développement du front-end (composant React, CSS)
-- [ ] Tests unitaires
-- [ ] Code review
-- [ ] Merge sur `develop`
-- [ ] Mise à jour du statut → **Done**
+- [ 1 ] Rédaction de la User Story avec critères d acceptation
+- [ 2 ] Découpage en tâches techniques
+- [ 3 ] Création d une branche `feature/nom-fonctionnalite`
+- [ 4 ] Développement du back-end (modèle, serializer, vue, URL)
+- [ 5 ] Développement du front-end (composant React, CSS)
+- [ 6 ] Tests unitaires
+- [ 7 ] Code review
+- [ 8 ] Merge sur `develop`
+- [ 9 ] Mise à jour du statut → **Done**
 
 ---
 
@@ -24,7 +29,7 @@ Une User Story suit le format :
 
 **En tant que** visiteur, **je veux** consulter la liste des véhicules disponibles, **afin de** trouver un véhicule qui correspond à mes besoins.
 
-**Critères d acceptation :**
+**Critères d'acceptation :**
 - Les véhicules s affichent sans connexion
 - Chaque véhicule affiche : photo, marque, modèle, année, kilométrage, carburant, prix
 - Un filtre permet de trier par Achat / Location / Tous
@@ -40,7 +45,7 @@ Une User Story suit le format :
 
 ---
 
-### US-02 — Détail d un véhicule ✅ DONE
+### US-02 — Détail d'un véhicule ✅ DONE
 
 **En tant que** visiteur, **je veux** voir le détail complet d un véhicule, **afin d** avoir toutes les informations avant de faire une demande.
 
@@ -173,44 +178,53 @@ Une User Story suit le format :
 
 **Statut : ✅ DONE**
 
----
+### US-09 : Options de location ✅ DONE
 
-## 🏗️ Architecture du projet
----
+En tant que client connecté, je veux choisir des options supplémentaires lors de ma demande de location, afin de personnaliser mon contrat selon mes besoins et bénéficier de services complémentaires.
 
-## 🚀 Installation et lancement
+**Critères d'acceptation :**
+- Affichage des options de location
+- Statistiques : Options
+- Déconnexion depuis le profil
 
-### Prérequis
-- Python 3.9+
-- Node.js 18+
-- PostgreSQL 15+
+**Tâches techniques :**
+- API `GET /api/profile/` et `PATCH /api/profile/update/`
+- Page `Profile.jsx` avec mode édition
+- Serializer `UserSerializer` avec champs partiels
 
-### Back-end
-```bash
+**Statut : ✅ DONE**
+
+2. Procédures d'Installation et de Lancement
+
+### Prérequis : 
+
+Avant de démarrer le projet, assurez-vous de disposer des versions minimales suivantes :
+
+Python 3.9 ou version supérieure
+Node.js 18 ou version supérieure
+PostgreSQL 15 ou version supérieure
+
+### Configuration du Back-end
 cd backend
 python -m venv env
-env\Scripts\activate
+source env/bin/activate  # Sur Windows, utilisez : env\Scripts\activate
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
-```
 
-### Front-end
-```bash
+### Configuration du Front-end
 cd frontend
 npm install
 npm run dev
-```
+Variables d'environnement
+Vous devez initialiser un fichier nommé .env à la racine du dossier backend/ afin d'y renseigner vos paramètres de configuration locaux (clés secrètes, paramètres de connexion à la base de données, etc.).
 
-### Variables d environnement
-Créer un fichier `.env` dans `backend/` :
+3. Mesures et Protocoles de Sécurité
+La sécurité de l'application repose sur huit piliers majeurs intégrés au cœur du système :
 
 
-
----
-
-## 🔒 Mesures de Sécurité
+##  Mesures de Sécurité
 
 ### 1 — Authentification JWT (JSON Web Token)
 
@@ -337,37 +351,36 @@ class ContractSerializer(serializers.ModelSerializer):
 
 ---
 
-## 📊 Tableau récapitulatif des User Stories
+4. Synthèse et Couverture des Tests Applicatifs
+Statuts et Garanties de Sécurité par User Story
 
-| ID | User Story | Statut | Sécurité associée |
-|---|---|---|---|
-| US-01 | Consulter les véhicules | ✅ DONE | Lecture publique |
-| US-02 | Voir le détail d un véhicule | ✅ DONE | Lecture publique |
-| US-03 | S inscrire | ✅ DONE | Validation + hachage mot de passe |
-| US-04 | Se connecter | ✅ DONE | JWT + token expirable |
-| US-05 | Déposer un dossier | ✅ DONE | Auth requise + client auto-assigné |
-| US-06 | Suivre ses dossiers | ✅ DONE | Filtrage par propriétaire |
-| US-07 | Documents dématérialisés | ✅ DONE | Upload sécurisé + vérification type |
-| US-08 | Gérer son profil | ✅ DONE | Auth requise + champs protégés |
 
----
+##  Tableau récapitulatif des User Stories
 
-## 🧪 Résultats des Tests
+US-01 (Consulter les véhicules) : Terminé. Sécurité : Accès en lecture publique restreint.
+US-02 (Voir le détail d'un véhicule) : Terminé. Sécurité : Accès en lecture publique restreint.
+US-03 (S'inscrire) : Terminé. Sécurité : Validation de structure et hachage fort du mot de passe.
+US-04 (Se connecter) : Terminé. Sécurité : Délivrance de jeton JWT avec cycle d'expiration.
+US-05 (Déposer un dossier) : Terminé. Sécurité : Authentification obligatoire et assignation automatique du profil.
+US-06 (Suivre ses dossiers) : Terminé. Sécurité : Filtrage strict appliqué selon le propriétaire de la ressource.
+US-07 (Documents dématérialisés) : Terminé. Sécurité : Téléversement étanche et vérification des types MIME autorisés.
+US-08 (Gérer son profil) : Terminé. Sécurité : Authentification obligatoire et protection des champs système.
 
-### Couverture des tests
 
-| Module | Tests | Résultat |
-|---|---|---|
-| `vehicles/models.py` | 5 tests | ✅ |
-| `vehicles/views.py` | 4 tests | ✅ |
-| `users/models.py` | 3 tests | ✅ |
-| `users/views.py` | 5 tests | ✅ |
-| `contracts/models.py` | 5 tests | ✅ |
-| `contracts/views.py` | 5 tests | ✅ |
-| **Total** | **27 tests** | **✅ > 80%** |
+##  Résultats de la suite de tests unitaires/Couverture des tests
 
-### Lancer les tests
 
-bash
+La stabilité globale de la plateforme est assurée par un ensemble de scénarios de tests couvrant plus de 80% des bases de code.
+
+Module vehicles/models.py : 5 scénarios — Conforme (Pass)
+Module vehicles/views.py : 4 scénarios — Conforme (Pass)
+Module users/models.py : 3 scénarios — Conforme (Pass)
+Module users/views.py : 5 scénarios — Conforme (Pass)
+Module contracts/models.py : 5 scénarios — Conforme (Pass)
+Module contracts/views.py : 5 scénarios — Conforme (Pass)
+Bilan Global : 27 scénarios exécutés — Validation globale (> 80% de couverture)
+
+### Pour exécuter localement la suite complète des tests unitaires, utilisez la commande suivante :
 cd backend
 python manage.py test tests.test_vehicles tests.test_users tests.test_contracts
+
