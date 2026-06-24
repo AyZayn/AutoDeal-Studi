@@ -1,13 +1,16 @@
 import "./RentalOptions.css";
 
-// On ajoute 'offerType' aux propriétés du composant
 function RentalOptions({ options, selectedOptions, onToggle, readOnly, offerType }) {
-    const included = options.filter(o => o.option_type === "included");
-    const supplements = options.filter(o => o.option_type === "supplement");
+
+    const included = options.filter(o => o.option_type && o.option_type.toLowerCase() === "included");
+    const supplements = options.filter(o => o.option_type && o.option_type.toLowerCase() === "supplement");
+
+
+    const currentOffer = offerType ? offerType.toLowerCase() : "";
 
     return (
         <div className="rental-options">
-            {/* 1. Les options incluses s'affichent toujours */}
+
             {included.length > 0 && (
                 <div className="options-section">
                     <h3 className="options-title">
@@ -29,8 +32,8 @@ function RentalOptions({ options, selectedOptions, onToggle, readOnly, offerType
                 </div>
             )}
 
-            {/* 2. Les suppléments s'affichent UNIQUEMENT si offerType vaut "sale" */}
-            {supplements.length > 0 && offerType === "sale" && (
+
+            {supplements.length > 0 && (currentOffer === "sale" || currentOffer === "both") && (
                 <div className="options-section">
                     <h3 className="options-title">
                         <span className="options-badge supplement">Options</span>
@@ -41,17 +44,20 @@ function RentalOptions({ options, selectedOptions, onToggle, readOnly, offerType
                         {supplements.map((option) => (
                             <div
                                 key={option.id}
-                                className={"option-card supplement " + (selectedOptions.includes(option.id) ? "selected" : "") + (readOnly ? " readonly" : "")}
-                                onClick={() => !readOnly && onToggle(option.id)}
+                                className={"option-card supplement " + (selectedOptions && selectedOptions.includes(option.id) ? "selected" : "") + (readOnly ? " readonly" : "")}
+                                onClick={() => !readOnly && onToggle && onToggle(option.id)}
                             >
                                 <div className="option-check">
-                                    {selectedOptions.includes(option.id) ? "✓" : "+"}
+                                    {(selectedOptions && selectedOptions.includes(option.id)) ? "✓" : "+"}
                                 </div>
                                 <div className="option-info">
                                     <p className="option-name">{option.name}</p>
                                     {option.description && <p className="option-desc">{option.description}</p>}
                                     <span className="option-billing">
-                                        {option.billing_type === "monthly" ? "Facturation mensuelle" : "Forfait unique"}
+
+                                        {option.billing_type && (option.billing_type.toLowerCase() === "monthly" || option.billing_type.toLowerCase() === "mensuel") 
+                                            ? "Facturation mensuelle" 
+                                            : "Forfait unique"}
                                     </span>
                                 </div>
                             </div>
