@@ -53,11 +53,11 @@ const calculateTotal = () => {
                 <h1 className="text-3xl font-bold text-white mb-8">
                     {type === "sale" ? "Acheter" : "Louer"} — {vehicle.brand} {vehicle.model}
                 </h1>
-                {success && <p className="text-green-400 text-center mb-4 bg-green-500/10 py-3 rounded-xl">Contrat cree avec succes ! Redirection...</p>}
+                {success && <p className="text-green-400 text-center mb-4 bg-green-500/10 py-3 rounded-xl">Contrat créé avec succès ! Redirection...</p>}
                 {error && <p className="text-red-400 text-center mb-4 bg-red-500/10 py-3 rounded-xl">{error}</p>}
                 <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 mb-6">
                     <div className="flex justify-between mb-2">
-                        <span className="text-gray-400">Vehicule</span>
+                        <span className="text-gray-400">Véhicule</span>
                         <span className="text-white font-semibold">{vehicle.brand} {vehicle.model} ({vehicle.year})</span>
                     </div>
                     <div className="flex justify-between mb-2">

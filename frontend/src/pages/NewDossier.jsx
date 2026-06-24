@@ -103,7 +103,7 @@ const calculateTotal = () => {
                     <form onSubmit={handleSubmit} className="dossier-form">
                         <div className="dossier-form-row">
                             <div className="dossier-field">
-                                <label>{type === "sale" ? "Date d achat souhaitee" : "Date de debut"}</label>
+                                <label>{type === "sale" ? "Date d'achat souhaitée" : "Date de debut"}</label>
                                 <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
                             </div>
                             {type === "rent" && (
@@ -128,7 +128,7 @@ const calculateTotal = () => {
                             <textarea
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
-                                placeholder="Ex: Je suis disponible le matin, j ai deja un financement..."
+                                placeholder="Ex: Je suis disponible le matin, j'ai deja un financement..."
                                 rows={4}
                             />
                         </div>
