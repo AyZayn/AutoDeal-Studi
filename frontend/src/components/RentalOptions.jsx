@@ -11,12 +11,12 @@ function RentalOptions({ options, selectedOptions, onToggle, readOnly, offerType
     return (
         <div className="rental-options">
 
-            {included.length > 0 && currentOffer === "rent" && (
-                <div className="options-section">
-                    <h3 className="options-title">
-                        <span className="options-badge included">Inclus</span>
-                        Avantages inclus dans la location
-                    </h3>
+        {included.length > 0 && (currentOffer === "rent" || currentOffer === "both") && (
+            <div className="options-section">
+                <h3 className="options-title">
+                    <span className="options-badge included">Inclus</span>
+                    Avantages inclus dans la location
+                </h3>
                     <div className="options-grid">
                         {included.map((option) => (
                             <div key={option.id} className="option-card included">
