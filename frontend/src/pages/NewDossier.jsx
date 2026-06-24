@@ -17,13 +17,11 @@ function NewDossier() {
     const [rentalOptions, setRentalOptions] = useState([]);
     const [selectedOptions, setSelectedOptions] = useState([]);
 
-    useEffect(() => {
-        if (type === "rent") {
+        useEffect(() => {
             API.get("/rental-options/")
                 .then((res) => setRentalOptions(res.data))
                 .catch(() => {});
-        }
-    }, [type]);
+        }, []); // Lancement au chargement de la page
 
     if (!vehicle) { navigate("/vehicles"); return null; }
 
@@ -114,14 +112,15 @@ const calculateTotal = () => {
                             )}
                         </div>
 
-                        {type === "rent" && rentalOptions.length > 0 && (
-                            <RentalOptions
-                                options={rentalOptions}
-                                selectedOptions={selectedOptions}
-                                onToggle={handleToggleOption}
-                                readOnly={false}
-                            />
-                        )}
+                    {rentalOptions.length > 0 && (
+                        <RentalOptions
+                            options={rentalOptions}
+                            selectedOptions={selectedOptions}
+                            onToggle={handleToggleOption}
+                            readOnly={false}
+                            offerType={type} 
+                        />
+                    )}
 
                         <div className="dossier-field">
                             <label>Message ou informations complémentaires (optionnel)</label>
