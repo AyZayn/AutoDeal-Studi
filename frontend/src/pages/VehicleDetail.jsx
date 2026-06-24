@@ -88,7 +88,7 @@ function VehicleDetail() {
                                 selectedOptions={[]}
                                 onToggle={() => {}}
                                 readOnly={true}
-                                offerType={vehicle.offer_type} // <-- On envoie le type de l'offre ici ("sale", "rent" ou "both")
+                                offerType={vehicle.offer_type} // "sale", "rent" ou "both"
                             />
                         )}
 
