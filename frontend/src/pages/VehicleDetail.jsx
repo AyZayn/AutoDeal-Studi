@@ -82,12 +82,13 @@ function VehicleDetail() {
                             <p className="vehicle-detail-description">{vehicle.description}</p>
                         )}
 
-                        {isRent && rentalOptions.length > 0 && (
+                        {rentalOptions.length > 0 && (
                             <RentalOptions
                                 options={rentalOptions}
                                 selectedOptions={[]}
                                 onToggle={() => {}}
                                 readOnly={true}
+                                offerType={vehicle.offer_type} // <-- On envoie le type de l'offre ici ("sale", "rent" ou "both")
                             />
                         )}
 

@@ -1,11 +1,13 @@
 import "./RentalOptions.css";
 
-function RentalOptions({ options, selectedOptions, onToggle, readOnly }) {
+// On ajoute 'offerType' aux propriétés du composant
+function RentalOptions({ options, selectedOptions, onToggle, readOnly, offerType }) {
     const included = options.filter(o => o.option_type === "included");
     const supplements = options.filter(o => o.option_type === "supplement");
 
     return (
         <div className="rental-options">
+            {/* 1. Les options incluses s'affichent toujours */}
             {included.length > 0 && (
                 <div className="options-section">
                     <h3 className="options-title">
@@ -27,7 +29,8 @@ function RentalOptions({ options, selectedOptions, onToggle, readOnly }) {
                 </div>
             )}
 
-            {supplements.length > 0 && (
+            {/* 2. Les suppléments s'affichent UNIQUEMENT si offerType vaut "sale" */}
+            {supplements.length > 0 && offerType === "sale" && (
                 <div className="options-section">
                     <h3 className="options-title">
                         <span className="options-badge supplement">Options</span>
