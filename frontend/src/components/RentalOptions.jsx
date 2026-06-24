@@ -31,7 +31,7 @@ function RentalOptions({ options, selectedOptions, onToggle, readOnly }) {
                 <div className="options-section">
                     <h3 className="options-title">
                         <span className="options-badge supplement">Options</span>
-                        Options supplémentaires
+                        Options supplémentaires si achat du véhicule
                     </h3>
                     <p className="options-subtitle">Prix définis après validation de votre dossier</p>
                     <div className="options-grid">
