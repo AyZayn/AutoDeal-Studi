@@ -11,7 +11,7 @@ function RentalOptions({ options, selectedOptions, onToggle, readOnly, offerType
     return (
         <div className="rental-options">
 
-            {included.length > 0 && (
+            {included.length > 0 && currentOffer === "rent" && (
                 <div className="options-section">
                     <h3 className="options-title">
                         <span className="options-badge included">Inclus</span>

@@ -25,21 +25,39 @@ function NewDossier() {
 
     if (!vehicle) { navigate("/vehicles"); return null; }
 
-const calculateTotal = () => {
-    if (type === "sale") return vehicle.sale_price;
-    if (!startDate || !endDate) return 0;
+    const calculateTotal = () => {
+        let total = 0;
+        let months = 1; // Par défaut 1 mois minimum pour la location
 
-    // 1. Calcul du nombre de jours réels
-    const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
-    if (days <= 0) return 0;
+        if (type === "sale") {
+            total = Number(vehicle.sale_price) || 0;
+        } else {
+            if (!startDate || !endDate) return 0;
+            const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
+            if (days <= 0) return 0;
+            
+            months = Math.ceil(days / 30);
+            total = months * Number(vehicle.rent_price);
+        }
 
-    // 2. Conversion en mois (on divise par 30 jours en moyenne)
-    // Math.ceil permet d'arrondir au mois supérieur (ex: 0.5 mois devient 1 mois, 1.2 mois devient 2 mois)
-    const months = Math.ceil(days / 30);
+        selectedOptions.forEach(optionId => {
+            
+            const optionObj = rentalOptions.find(o => o.id === optionId);
+            if (optionObj && optionObj.price) {
+                const optionPrice = Number(optionObj.price);
+                
+                // Si c'est une option mensuelle ET qu'on est en location, on multiplie par le nombre de mois
+                if (optionObj.billing_type?.toLowerCase() === "monthly" && type === "rent") {
+                    total += optionPrice * months;
+                } else {
+                    // Sinon (forfait unique ou option d'achat), on l'ajoute une seule fois
+                    total += optionPrice;
+                }
+            }
+        });
 
-    // 3. Calcul du prix total basé sur le prix par mois (rent_price)
-    return (months * vehicle.rent_price).toFixed(2);
-};
+        return total.toFixed(2);
+    };
 
     const handleToggleOption = (optionId) => {
         setSelectedOptions(prev =>
