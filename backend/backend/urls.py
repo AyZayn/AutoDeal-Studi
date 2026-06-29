@@ -6,6 +6,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('test-alert/', TestAlertView.as_view(), name='test-alert'), # <-- À mettre ici à la racine principale
+    path('api/', include('vehicles.urls')),
     path("api/", include("vehicles.urls")),
     path("api/", include("users.urls")),
     path("api/", include("contracts.urls")),
