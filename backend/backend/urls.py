@@ -1,32 +1,27 @@
-from django.contrib import admin
-from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-import logging
-
-logger = logging.getLogger('autodeal')
+from django.core.mail import send_mail
+from django.conf import settings
 
 class TestAlertView(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
-        # Déclenche l'alerte à travers le fichier alerting.py
-        logger.error("Test d'alerte critique AutoDeal : le système d'alerte fonctionne via Brevo")
-        return Response({
-            "status": "Succès", 
-            "message": "L'erreur de test a été journalisée et l'e-mail a été envoyé avec succès !"
-        })
-
-urlpatterns = [
-    path("admin/", admin.site.urls),
-    path('test-alert/', TestAlertView.as_view(), name='test-alert'), # Plus besoin d'import externe !
-    path('api/', include('vehicles.urls')),
-    path("api/", include("vehicles.urls")),
-    path("api/", include("users.urls")),
-    path("api/", include("contracts.urls")),
-    path("api/auth/login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        try:
+            # On court-circuicte le logger pour tester la connexion SMTP en direct à l'écran
+            send_mail(
+                subject="[AutoDeal] TEST SMTP DIRECT FONCTIONNEL",
+                message="Si ce message s'affiche, la connexion SMTP avec Brevo fonctionne !",
+                from_email="el.abdesslam@gmail.com", # Ton adresse validée
+                recipient_list=[settings.ADMIN_EMAIL],
+                fail_silently=False, # <-- IMPORTANT : mettons False pour voir l'erreur s'il y en a une !
+            )
+            return Response({
+                "status": "Succès SMTP", 
+                "message": "Le serveur SMTP a accepté le mail en direct ! Vérifie Brevo et tes spams."
+            })
+        except Exception as e:
+            return Response({
+                "status": "Erreur de connexion SMTP",
+                "erreur_technique": str(e)
+            }, status=500)
