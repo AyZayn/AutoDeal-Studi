@@ -6,14 +6,14 @@ from django.conf import settings
 class EmailAlertHandler(logging.Handler):
     """
     Handler de logging qui envoie un email automatiquement 
-    quand une erreur critique (ERROR ou CRITICAL) se produit.
+    quand une erreur critique se produit.
     """
     def emit(self, record):
         if record.levelno >= logging.ERROR:
             try:
                 subject = f"[AutoDeal] ALERTE {record.levelname} — {record.module}"
                 
-                # Récupération propre de la stacktrace / exception s'il y en a une
+                
                 exception_details = ""
                 if record.exc_info:
                     import traceback
@@ -37,7 +37,7 @@ Message :
                     message=message,
                     from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[settings.ADMIN_EMAIL],
-                    fail_silently=True, # Évite de faire planter l'application si le serveur mail est en panne
+                    fail_silently=True, 
                 )
             except Exception:
                 pass
