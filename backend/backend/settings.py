@@ -11,25 +11,17 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
-from pathlib import Path
 from dotenv import load_dotenv
 import os
+from datetime import timedelta
 import dj_database_url
 
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
@@ -38,8 +30,6 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1'
 ]
-
-# Application definition
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -50,14 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'cloudinary_storage',
     'cloudinary',
-
     'django.contrib.staticfiles',
-
-    # Bibliothèques installées
     'rest_framework',
     'corsheaders',
-
-    # Nos applications
     'vehicles',
     'contracts',
     'users',
@@ -95,23 +80,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
     }
 }
 
-# Si la variable DATABASE_URL existe (sur Render), on l'utilise
 if os.environ.get('DATABASE_URL'):
     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 else:
-    # Colle ici ton ANCIEN bloc de configuration locale pour ton PC :
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'autodeal',
@@ -120,10 +97,6 @@ else:
         'HOST': 'localhost',
         'PORT': '5432',
     }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -140,62 +113,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+LANGUAGE_CODE = 'fr-fr'
+TIME_ZONE = 'Europe/Paris'
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = 'static/'
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Autorise le front-end React à faire des requêtes
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:5173",
     "https://auto-deal-studi.vercel.app",
 ]
-
-# Configuration de l'API REST
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    ]
-}
-
-# Langue et fuseau horaire
-LANGUAGE_CODE = 'fr-fr'
-TIME_ZONE = 'Europe/Paris'
-
-# Utiliser notre modèle utilisateur personnalisé
-AUTH_USER_MODEL = 'users.CustomUser'
-
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-from datetime import timedelta
-
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=365),
-}
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -204,6 +140,17 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
+}
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 
 JAZZMIN_SETTINGS = {
@@ -215,7 +162,16 @@ JAZZMIN_SETTINGS = {
     "search_model": ["auth.User", "vehicles.Vehicle"],
 }
 
-import os
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
+
+ADMINS = [("Admin AutoDeal", os.getenv("ADMIN_EMAIL", ""))]
+SERVER_EMAIL = os.getenv("EMAIL_HOST_USER", "")
 
 LOGGING = {
     "version": 1,
@@ -230,44 +186,47 @@ LOGGING = {
             "style": "{",
         },
     },
-"handlers": {
+    "handlers": {
         "console": {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
         "file_errors": {
-            "class": "logging.StreamHandler",  # Changé ici pour la console
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs", "errors.log"),
             "level": "ERROR",
             "formatter": "verbose",
         },
         "file_info": {
-            "class": "logging.StreamHandler",  # Changé ici pour la console
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs", "info.log"),
             "level": "INFO",
+            "formatter": "verbose",
+        },
+        "email_alert": {
+            "class": "backend.alerting.EmailAlertHandler",
+            "level": "ERROR",
             "formatter": "verbose",
         },
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "file_errors"],
+            "handlers": ["console", "file_errors", "email_alert"],
             "level": "ERROR",
             "propagate": True,
         },
         "autodeal": {
-            "handlers": ["console", "file_info", "file_errors"],
+            "handlers": ["console", "file_info", "file_errors", "email_alert"],
             "level": "DEBUG",
             "propagate": False,
         },
     },
 }
 
-import os
-
-# Configuration Cloudinary pour les médias
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-# On dit à Django d'utiliser Cloudinary pour stocker les fichiers médias
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
