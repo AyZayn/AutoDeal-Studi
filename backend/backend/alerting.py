@@ -31,11 +31,11 @@ Message :
 {record.getMessage()}
 {exception_details}
 """
-                # Envoi de l'email en utilisant les variables de settings
+# Envoi de l'email en forçant l'adresse validée
                 send_mail(
                     subject=subject,
                     message=message,
-                    from_email=settings.EMAIL_HOST_USER,
+                    from_email="el.abdesslam@gmail.com",
                     recipient_list=[settings.ADMIN_EMAIL],
                     fail_silently=True, 
                 )
