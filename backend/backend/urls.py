@@ -13,8 +13,12 @@ logger = logging.getLogger('autodeal')
 class TestAlertView(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
-        logger.error("Test d'alerte AutoDeal : le système d'alerte fonctionne !")
-        return Response({"message": "L'erreur de test a été journalisée et l'e-mail a été envoyé !"})
+        # Déclenche l'alerte à travers le fichier alerting.py
+        logger.error("Test d'alerte critique AutoDeal : le système d'alerte fonctionne via Brevo")
+        return Response({
+            "status": "Succès", 
+            "message": "L'erreur de test a été journalisée et l'e-mail a été envoyé avec succès !"
+        })
 
 urlpatterns = [
     path("admin/", admin.site.urls),
