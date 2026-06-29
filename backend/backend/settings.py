@@ -191,18 +191,6 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
-        "file_errors": {
-            "class": "logging.FileHandler",
-            "filename": os.path.join(BASE_DIR, "logs", "errors.log"),
-            "level": "ERROR",
-            "formatter": "verbose",
-        },
-        "file_info": {
-            "class": "logging.FileHandler",
-            "filename": os.path.join(BASE_DIR, "logs", "info.log"),
-            "level": "INFO",
-            "formatter": "verbose",
-        },
         "email_alert": {
             "class": "backend.alerting.EmailAlertHandler",
             "level": "ERROR",
@@ -211,12 +199,12 @@ LOGGING = {
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "file_errors", "email_alert"],
+            "handlers": ["console", "email_alert"], # Uniquement console + email
             "level": "ERROR",
             "propagate": True,
         },
         "autodeal": {
-            "handlers": ["console", "file_info", "file_errors", "email_alert"],
+            "handlers": ["console", "email_alert"], # Uniquement console + email
             "level": "DEBUG",
             "propagate": False,
         },
