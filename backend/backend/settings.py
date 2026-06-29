@@ -168,14 +168,15 @@ EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER") 
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
 
 ADMINS = [("Admin AutoDeal", os.getenv("ADMIN_EMAIL", ""))]
 
-SERVER_EMAIL = os.getenv("EMAIL_HOST_USER")
-DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")
+
+SERVER_EMAIL = "el.abdesslam@gmail.com"
+DEFAULT_FROM_EMAIL = "el.abdesslam@gmail.com"
 
 LOGGING = {
     "version": 1,
