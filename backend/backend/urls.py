@@ -13,7 +13,7 @@ logger = logging.getLogger('autodeal')
 class TestAlertView(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
-        logger.error("Test d'alerte critique AutoDeal : le système d'alerte fonctionne !")
+        logger.error("Test d'alerte AutoDeal : le système d'alerte fonctionne !")
         return Response({"message": "L'erreur de test a été journalisée et l'e-mail a été envoyé !"})
 
 urlpatterns = [
